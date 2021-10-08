@@ -25,7 +25,7 @@ import (
 	"github.com/buycoinsresearch/buycoins-orderbook-go"
 )
 
-var authorize = orderbooks.Buycoins("public_key", "secret_key")
+var authorize = orderbooks.BuyCoins("public_key", "secret_key")
 ...
 ```
 
