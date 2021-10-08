@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"github.com/buycoinsresearch/buycoins-orderbook-go"
 	"github.com/joho/godotenv"
-	"os"
 	"log"
-	"fmt"
+	"os"
 )
 
 //alternatively, you could pass in your API credentials into a global variable like so;
@@ -22,7 +22,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	authorize := orderbooks.Buycoins(os.Getenv("PUBLIC_KEY"), os.Getenv("SECRET_KEY"))
+	authorize := orderbooks.BuyCoins(os.Getenv("PUBLIC_KEY"), os.Getenv("SECRET_KEY"))
 
 	getPairs, err := authorize.GetPairs()
 	if err != nil {
