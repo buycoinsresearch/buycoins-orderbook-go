@@ -30,7 +30,14 @@ var authorize = orderbooks.Buycoins("public_key", "secret_key")
 ```
 
 >**NOTE**<br/>
->Please ensure you pass in both the public key and the secret key
+>Please ensure you pass in both the public key and the secret key. Also, it is important to set the environment you will be working with. Example:
+```
+APP_ENV=STAGING
+```
+OR
+```
+APP_ENV=PRODUCTION
+```
 ---
 
 ## Usage

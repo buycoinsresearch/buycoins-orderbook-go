@@ -6,17 +6,34 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/machinebox/graphql"
 )
 
-const endpoint = "https://backend.buycoins.tech/api/graphql"
+const (
+	prodEndpoint    = "https://backend.buycoins.tech/api/graphql"
+	stagingEndpoint = "https://bitkoin-dev.herokuapp.com/api/graphql"
+)
+
+var endpoint string
 
 type ConfigCredentials struct {
 	basicAuth string
 }
 
 func Buycoins(publicKey, secretKey string) ConfigCredentials {
+	env := os.Getenv("APP_ENV")
+	fmt.Println("Env: ", env)
+	switch env {
+	case "STAGING":
+		endpoint = stagingEndpoint
+	case  "test":
+		endpoint = stagingEndpoint
+	case "PRODUCTION":
+		endpoint = prodEndpoint
+	}
+	log.Printf("End point %v", endpoint)
 	auth := "Basic " + b64.URLEncoding.EncodeToString([]byte(publicKey+":"+secretKey))
 	return ConfigCredentials{
 		basicAuth: auth,
@@ -347,9 +364,9 @@ func (config ConfigCredentials) GetBalance(crypto string) (getBalances, error) {
 	req.Header.Set("Authorization", config.basicAuth)
 	ctx := context.Background()
 	res := struct {
-		GetBalances [] struct {
-			Id string
-			Cryptocurrency string
+		GetBalances []struct {
+			Id               string
+			Cryptocurrency   string
 			ConfirmedBalance string
 		}
 	}{}
@@ -359,8 +376,8 @@ func (config ConfigCredentials) GetBalance(crypto string) (getBalances, error) {
 	}
 	log.Println(res)
 	return getBalances{
-		Id: res.GetBalances[0].Id,
-		Cryptocurrency: res.GetBalances[0].Cryptocurrency,
+		Id:               res.GetBalances[0].Id,
+		Cryptocurrency:   res.GetBalances[0].Cryptocurrency,
 		ConfirmedBalance: res.GetBalances[0].ConfirmedBalance,
 	}, nil
 }
